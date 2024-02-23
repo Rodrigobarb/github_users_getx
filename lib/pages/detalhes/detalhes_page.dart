@@ -5,7 +5,9 @@ import 'package:github_user_getx/pages/detalhes/detalhes_controller.dart';
 import 'package:get/get.dart';
 
 class DetalhesPage extends StatefulWidget {
-  const DetalhesPage({Key? key}) : super(key: key);
+  final String username;
+
+  const DetalhesPage({Key? key, required this.username}) : super(key: key);
 
   @override
   State<DetalhesPage> createState() => _DetalhesState();
@@ -20,20 +22,21 @@ class _DetalhesState extends State<DetalhesPage> {
     super.initState();
     // Inicialização do controlador na inicialização do widget
     _controller = DetalhesController(repository: GithubRepository(dio: Dio()));
+    _controller.getGitUser(username: widget.username);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalhes'),
+        title: const Text('Detalhes'),
       ),
       body: Obx(() {
         // Verifica se a página está carregando
         return _controller.isLoading.value
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : _controller.gitHubUser == null
-                ? Center(child: Text("Nenhum usuário encontrado"))
+                ? const Center(child: Text("Nenhum usuário encontrado"))
                 : _buildUserInfo();
       }),
     );
@@ -76,7 +79,7 @@ class _DetalhesState extends State<DetalhesPage> {
                     color: Colors.black, fontWeight: FontWeight.bold)),
             subtitle: Text(
               _controller.gitHubUser!.login,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontSize: 22,
                   fontWeight: FontWeight.bold),

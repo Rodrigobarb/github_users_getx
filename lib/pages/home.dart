@@ -33,25 +33,30 @@ class _HomeState extends State<Home> {
         title: const Text("GitHub Usuários"),
       ),
       body: Obx(() {
-        
-        return _controller?.isLoading.value ?? false  // corrigido para isLoading
-            ? Center(child: CircularProgressIndicator())
+        return _controller?.isLoading.value ?? false // corrigido para isLoading
+            ? const Center(child: CircularProgressIndicator())
             : _controller?.users.isEmpty ?? true
-                ? Center(child: Text("Nenhum usuário encontrado"))
+                ? const Center(
+                    child: Text(
+                    "Nenhum usuário encontrado",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  )
+                  )      
                 : ListView.builder(
                     itemCount: _controller?.users.length ?? 0,
                     itemBuilder: (_, index) {
                       final item = _controller?.users[index];
                       return ListTile(
-                        title: Text(item?.login ?? ""),
-                   onTap:(){
-                    Get.to(DetalhesPage(username: item!.login));
-       }
-                      );
-       
+                          title: Text(item?.login ?? ""),
+                          onTap: (){
+                            Get.to(DetalhesPage(username: item?.login ?? ""));
+                          },
+                        );
                     },
-                    
-                  );           
+                  );              
       }),
     );
   }
